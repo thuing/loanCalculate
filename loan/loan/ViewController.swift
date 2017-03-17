@@ -11,17 +11,24 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
     @IBOutlet weak var loanAmountField: UITextField!
     @IBOutlet weak var loanTermField: UITextField!
     @IBOutlet weak var interestRateField: UITextField!
     @IBOutlet weak var result: UILabel!
-    
     @IBAction func calculate(_ sender: Any) {
         let calculate_1 = simpleCalculate()
         result.text = calculate_1.calculate(loanAmount: Double( loanAmountField.text!)!, years: Int( loanTermField.text!)!, interestRate: Double( interestRateField.text!)!).description
     }
-
+    @IBAction func compoundCalculate(_ sender: Any) {
+        let calculate_2 = compoundcalculate()
+        result.text = calculate_2.calculate(loanAmount: Double(loanAmountField.text!)!, years: Int(loanTermField.text!)!,interestRate: Double(interestRateField.text!)!).description
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        loanAmountField.resignFirstResponder()
+        loanTermField.resignFirstResponder()
+        interestRateField.resignFirstResponder()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -31,10 +38,7 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
 }
-
 
 class simpleCalculate{
     //小驼峰命名法：第一个英文单词小写，后面所有单词首字母大写
@@ -45,3 +49,15 @@ class simpleCalculate{
         
     }
 }
+
+class compoundcalculate{
+    func calculate(loanAmount : Double,years:Int,interestRate:Double) -> Double {
+        let rate = interestRate / 100
+        let compound = pow(1+rate, Double(years))
+        return loanAmount * compound
+    }
+
+}
+
+
+
